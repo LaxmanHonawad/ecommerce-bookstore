@@ -1,0 +1,1576 @@
+1. Member
+
+POST, /api/auth/register
+Purpose: Create a new customer account and return an auth token (user is logged in immediately).
+Request:
+{
+  "name": "Laxman Honawad",
+  "email": "laxman@gmail.com",
+  "password": "1234567890"
+}
+
+Response:
+{
+  "token": "6628440207a6ebf55910388f663d81b2c0576a8a24d006158f2350581d325521",
+  "expiresAt": "2026-11-09T13:26:08.322235800Z",
+  "user": {
+    "id": 3,
+    "name": "Laxman Honawad",
+    "email": "laxman@gmail.com",
+    "role": "CUSTOMER",
+    "giftPoints": 0
+  }
+}
+
+
+POST, /api/auth/login
+Purpose: Authenticate with email and password and return a Bearer token to use in the Authorization header.
+
+Request:
+{
+  "email": "laxman@gmail.com",
+  "password": "1234567890"
+}
+
+Response:
+{
+  "token": "4fbcc3dc109a896e6cd2e84e63f2aef7da8cb833c61077096366897ca7145c66",
+  "expiresAt": "2026-11-09T13:29:53.620820600Z",
+  "user": {
+    "id": 3,
+    "name": "Laxman Honawad",
+    "email": "laxman@gmail.com",
+    "role": "CUSTOMER",
+    "giftPoints": 0
+  }
+}
+
+
+POST, /api/auth/logout
+Purpose: Invalidate the current Bearer token (log the user out).
+
+pass token in headers
+
+GET, /api/users/me
+Purpose: Get the logged-in user's profile (name, email, role, gift points).
+Response:
+{
+  "id": 3,
+  "name": "Laxman Honawad",
+  "email": "laxman@gmail.com",
+  "role": "CUSTOMER",
+  "giftPoints": 0
+}
+
+GET, /api/users/me/addresses
+Purpose: List the logged-in user's saved delivery addresses.
+[
+  {
+    "id": 2,
+    "firstName": "Laxman",
+    "lastName": "Honawad",
+    "email": "laxman@gmail.com",
+    "phone": "+919876543210",
+    "line1": "12 MG Road",
+    "line2": "Near Park",
+    "city": "Bengaluru",
+    "pin": "560001",
+    "state": "Karnataka",
+    "country": "India"
+  }
+]
+
+POST, /api/users/me/addresses
+Purpose: Add a new delivery address for the logged-in user.
+{
+  "firstName": "Laxman",
+  "lastName": "Honawad",
+  "email": "laxman@gmail.com",
+  "phone": "+919876543210",
+  "line1": "12 MG Road",
+  "line2": "Near Park",
+  "city": "Bengaluru",
+  "pin": "560001",
+  "state": "Karnataka",
+  "country": "India"
+}
+
+{
+  "id": 2,
+  "firstName": "Laxman",
+  "lastName": "Honawad",
+  "email": "laxman@gmail.com",
+  "phone": "+919876543210",
+  "line1": "12 MG Road",
+  "line2": "Near Park",
+  "city": "Bengaluru",
+  "pin": "560001",
+  "state": "Karnataka",
+  "country": "India"
+}
+
+
+PUT, /api/users/me/addresses/{id}
+Purpose: Update an existing saved delivery address (same body as the add-address request).
+
+{
+  "id": 2,
+  "firstName": "Laxman",
+  "lastName": "Honawad",
+  "email": "laxman@gmail.com",
+  "phone": "+919876543210",
+  "line1": "12 MG Road",
+  "line2": "Near Freedom Park",
+  "city": "Bengaluru",
+  "pin": "560001",
+  "state": "Karnataka",
+  "country": "India"
+}
+
+{
+  "id": 2,
+  "firstName": "Laxman",
+  "lastName": "Honawad",
+  "email": "laxman@gmail.com",
+  "phone": "+919876543210",
+  "line1": "12 MG Road",
+  "line2": "Near Freedom Park",
+  "city": "Bengaluru",
+  "pin": "560001",
+  "state": "Karnataka",
+  "country": "India"
+}
+
+DELETE, /api/users/me/addresses/{id}
+Purpose: Delete a saved delivery address by id
+
+==========================================================================================================================================================================
+2. Catalog (/api)
+
+GET, /api/home
+Purpose: Get the landing page sections (lists of books); includes personalised "recommended" books when a Bearer token is sent.
+
+{
+  "recommended": [
+    {
+      "id": 2,
+      "title": "The Midnight Hour",
+      "description": "Haunting tale of a man's journey and the shadows of a forgotten past.",
+      "isbn": "9780000000004",
+      "authorId": 4,
+      "author": "James Adams",
+      "publisherId": 3,
+      "publisher": "Lakeview Books",
+      "categoryId": 2,
+      "category": "Mystery",
+      "format": "Paperback",
+      "language": "English",
+      "price": 299.00,
+      "stock": 60,
+      "rating": 4.60,
+      "ratingCount": 210,
+      "soldCount": 930,
+      "coverUrl": "/covers/the-midnight-hour.jpg",
+      "publishedOn": "2026-01-12",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 1,
+      "title": "Beneath the Stars",
+      "description": "A heartwarming tale where two souls discover who they need.",
+      "isbn": "9780000000005",
+      "authorId": 5,
+      "author": "Jessica Martin",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 1,
+      "category": "Romance",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 499.00,
+      "stock": 25,
+      "rating": 4.30,
+      "ratingCount": 150,
+      "soldCount": 880,
+      "coverUrl": "/covers/beneath-the-stars.jpg",
+      "publishedOn": "2026-03-03",
+      "estimatedDelivery": "2026-11-13"
+    },
+    {
+      "id": 8,
+      "title": "The Art of Focus",
+      "description": "Practical guide to mastering focus and boosting productivity every day.",
+      "isbn": "9780000000001",
+      "authorId": 1,
+      "author": "Arjun Patel",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 399.00,
+      "stock": 50,
+      "rating": 4.50,
+      "ratingCount": 120,
+      "soldCount": 820,
+      "coverUrl": "/covers/the-art-of-focus.jpg",
+      "publishedOn": "2026-04-22",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 4,
+      "title": "The Final Frontier",
+      "description": "A mission to space secrets to change humanity forever.",
+      "isbn": "9780000000006",
+      "authorId": 6,
+      "author": "Laura Mitchell",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 3,
+      "category": "Science Fiction",
+      "format": "Paperback",
+      "language": "English",
+      "price": 359.00,
+      "stock": 45,
+      "rating": 4.50,
+      "ratingCount": 130,
+      "soldCount": 760,
+      "coverUrl": "/covers/the-final-frontier.jpg",
+      "publishedOn": "2026-04-02",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 9,
+      "title": "The Path to Success",
+      "description": "A practical guide to achieving goals with clarity and confidence.",
+      "isbn": "9780000000003",
+      "authorId": 3,
+      "author": "James Wright",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 359.00,
+      "stock": 35,
+      "rating": 4.40,
+      "ratingCount": 95,
+      "soldCount": 710,
+      "coverUrl": "/covers/the-path-to-success.jpg",
+      "publishedOn": "2026-06-01",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 7,
+      "title": "The Art of Learning",
+      "description": "Master the mindset and methods for effective lifelong learning.",
+      "isbn": "9780000000002",
+      "authorId": 2,
+      "author": "Raj Patel",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 259.00,
+      "stock": 40,
+      "rating": 4.20,
+      "ratingCount": 80,
+      "soldCount": 640,
+      "coverUrl": "/covers/the-art-of-learning.jpg",
+      "publishedOn": "2026-05-12",
+      "estimatedDelivery": "2026-11-11"
+    }
+  ],
+  "bestsellers": [
+    {
+      "id": 2,
+      "title": "The Midnight Hour",
+      "description": "Haunting tale of a man's journey and the shadows of a forgotten past.",
+      "isbn": "9780000000004",
+      "authorId": 4,
+      "author": "James Adams",
+      "publisherId": 3,
+      "publisher": "Lakeview Books",
+      "categoryId": 2,
+      "category": "Mystery",
+      "format": "Paperback",
+      "language": "English",
+      "price": 299.00,
+      "stock": 60,
+      "rating": 4.60,
+      "ratingCount": 210,
+      "soldCount": 930,
+      "coverUrl": "/covers/the-midnight-hour.jpg",
+      "publishedOn": "2026-01-12",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 1,
+      "title": "Beneath the Stars",
+      "description": "A heartwarming tale where two souls discover who they need.",
+      "isbn": "9780000000005",
+      "authorId": 5,
+      "author": "Jessica Martin",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 1,
+      "category": "Romance",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 499.00,
+      "stock": 25,
+      "rating": 4.30,
+      "ratingCount": 150,
+      "soldCount": 880,
+      "coverUrl": "/covers/beneath-the-stars.jpg",
+      "publishedOn": "2026-03-03",
+      "estimatedDelivery": "2026-11-13"
+    },
+    {
+      "id": 8,
+      "title": "The Art of Focus",
+      "description": "Practical guide to mastering focus and boosting productivity every day.",
+      "isbn": "9780000000001",
+      "authorId": 1,
+      "author": "Arjun Patel",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 399.00,
+      "stock": 50,
+      "rating": 4.50,
+      "ratingCount": 120,
+      "soldCount": 820,
+      "coverUrl": "/covers/the-art-of-focus.jpg",
+      "publishedOn": "2026-04-22",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 4,
+      "title": "The Final Frontier",
+      "description": "A mission to space secrets to change humanity forever.",
+      "isbn": "9780000000006",
+      "authorId": 6,
+      "author": "Laura Mitchell",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 3,
+      "category": "Science Fiction",
+      "format": "Paperback",
+      "language": "English",
+      "price": 359.00,
+      "stock": 45,
+      "rating": 4.50,
+      "ratingCount": 130,
+      "soldCount": 760,
+      "coverUrl": "/covers/the-final-frontier.jpg",
+      "publishedOn": "2026-04-02",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 9,
+      "title": "The Path to Success",
+      "description": "A practical guide to achieving goals with clarity and confidence.",
+      "isbn": "9780000000003",
+      "authorId": 3,
+      "author": "James Wright",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 359.00,
+      "stock": 35,
+      "rating": 4.40,
+      "ratingCount": 95,
+      "soldCount": 710,
+      "coverUrl": "/covers/the-path-to-success.jpg",
+      "publishedOn": "2026-06-01",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 7,
+      "title": "The Art of Learning",
+      "description": "Master the mindset and methods for effective lifelong learning.",
+      "isbn": "9780000000002",
+      "authorId": 2,
+      "author": "Raj Patel",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 259.00,
+      "stock": 40,
+      "rating": 4.20,
+      "ratingCount": 80,
+      "soldCount": 640,
+      "coverUrl": "/covers/the-art-of-learning.jpg",
+      "publishedOn": "2026-05-12",
+      "estimatedDelivery": "2026-11-11"
+    }
+  ],
+  "newLaunches": [
+    {
+      "id": 13,
+      "title": "The Lost Kitten",
+      "description": "A heartwarming tale of courage, friendship, and feline adventure.",
+      "isbn": "9780000000009",
+      "authorId": 9,
+      "author": "Emily Parker",
+      "publisherId": 5,
+      "publisher": "Little Owl Books",
+      "categoryId": 11,
+      "category": "Children's",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 339.00,
+      "stock": 30,
+      "rating": 4.80,
+      "ratingCount": 18,
+      "soldCount": 35,
+      "coverUrl": "/covers/the-lost-kitten.jpg",
+      "publishedOn": "2026-11-05",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 10,
+      "title": "The Joy of Minimalism",
+      "description": "Declutter your life to uncover peace, clarity, and joy.",
+      "isbn": "9780000000007",
+      "authorId": 7,
+      "author": "Daniel Reed",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 149.00,
+      "stock": 70,
+      "rating": 5.00,
+      "ratingCount": 40,
+      "soldCount": 145,
+      "coverUrl": "/covers/the-joy-of-minimalism.jpg",
+      "publishedOn": "2026-11-03",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 3,
+      "title": "The Vanishing House",
+      "description": "A chilling mystery unfolds within a house that disappears.",
+      "isbn": "9780000000008",
+      "authorId": 8,
+      "author": "Clara Nelson",
+      "publisherId": 3,
+      "publisher": "Lakeview Books",
+      "categoryId": 2,
+      "category": "Mystery",
+      "format": "eBook",
+      "language": "English",
+      "price": 99.00,
+      "stock": 999,
+      "rating": 4.00,
+      "ratingCount": 22,
+      "soldCount": 60,
+      "coverUrl": "/covers/the-vanishing-house.jpg",
+      "publishedOn": "2026-10-31",
+      "estimatedDelivery": "2026-11-09"
+    },
+    {
+      "id": 14,
+      "title": "Quantum Curiosity",
+      "description": "A friendly tour through the strangest ideas in modern physics.",
+      "isbn": "9780000000014",
+      "authorId": 6,
+      "author": "Laura Mitchell",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 16,
+      "category": "Science",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 549.00,
+      "stock": 18,
+      "rating": 4.70,
+      "ratingCount": 88,
+      "soldCount": 270,
+      "coverUrl": "/covers/quantum-curiosity.jpg",
+      "publishedOn": "2026-09-09",
+      "estimatedDelivery": "2026-11-13"
+    },
+    {
+      "id": 12,
+      "title": "Everyday Cooking Made Simple",
+      "description": "Fast, healthy home recipes with everyday ingredients.",
+      "isbn": "9780000000012",
+      "authorId": 9,
+      "author": "Emily Parker",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 10,
+      "category": "Cooking",
+      "format": "Paperback",
+      "language": "English",
+      "price": 279.00,
+      "stock": 33,
+      "rating": 4.30,
+      "ratingCount": 64,
+      "soldCount": 355,
+      "coverUrl": "/covers/everyday-cooking.jpg",
+      "publishedOn": "2026-08-10",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 11,
+      "title": "Wanderlust Diaries",
+      "description": "Travel stories and practical tips from 30 countries.",
+      "isbn": "9780000000015",
+      "authorId": 1,
+      "author": "Arjun Patel",
+      "publisherId": 5,
+      "publisher": "Little Owl Books",
+      "categoryId": 9,
+      "category": "Travel",
+      "format": "Paperback",
+      "language": "English",
+      "price": 379.00,
+      "stock": 22,
+      "rating": 4.00,
+      "ratingCount": 41,
+      "soldCount": 190,
+      "coverUrl": "/covers/wanderlust-diaries.jpg",
+      "publishedOn": "2026-07-21",
+      "estimatedDelivery": "2026-11-12"
+    }
+  ]
+}
+
+GET, /api/categories
+Purpose: List all book categories (for menus and filters).
+
+[
+  {
+    "id": 6,
+    "name": "Biography"
+  },
+  {
+    "id": 11,
+    "name": "Children's"
+  },
+  {
+    "id": 13,
+    "name": "Comics & Graphic Novels"
+  },
+  {
+    "id": 10,
+    "name": "Cooking"
+  },
+  {
+    "id": 15,
+    "name": "Drama"
+  },
+  {
+    "id": 4,
+    "name": "Fantasy"
+  },
+  {
+    "id": 5,
+    "name": "Historical"
+  },
+  {
+    "id": 19,
+    "name": "Language Learning"
+  },
+  {
+    "id": 8,
+    "name": "Memoir"
+  },
+  {
+    "id": 2,
+    "name": "Mystery"
+  },
+  {
+    "id": 17,
+    "name": "Philosophy"
+  },
+  {
+    "id": 14,
+    "name": "Poetry"
+  },
+  {
+    "id": 18,
+    "name": "Religion"
+  },
+  {
+    "id": 1,
+    "name": "Romance"
+  },
+  {
+    "id": 16,
+    "name": "Science"
+  },
+  {
+    "id": 3,
+    "name": "Science Fiction"
+  },
+  {
+    "id": 7,
+    "name": "Self-help"
+  },
+  {
+    "id": 9,
+    "name": "Travel"
+  },
+  {
+    "id": 12,
+    "name": "Young Adult"
+  }
+]
+
+
+GET, /api/brands
+Purpose: List all brands/publishers (for filters).
+
+[
+  {
+    "id": 1,
+    "name": "ABC Publishers"
+  },
+  {
+    "id": 2,
+    "name": "Horizon Press"
+  },
+  {
+    "id": 3,
+    "name": "Lakeview Books"
+  },
+  {
+    "id": 5,
+    "name": "Little Owl Books"
+  },
+  {
+    "id": 4,
+    "name": "Northstar Publishing"
+  }
+]
+
+GET, /api/authors
+Purpose: List all authors.
+
+[
+  {
+    "id": 1,
+    "name": "Arjun Patel",
+    "bio": "Author and productivity writer focused on deep work and attention."
+  },
+  {
+    "id": 8,
+    "name": "Clara Nelson",
+    "bio": "Author of chilling mysteries and epic fantasy."
+  },
+  {
+    "id": 7,
+    "name": "Daniel Reed",
+    "bio": "Writer, minimalist, and productivity coach based in San Francisco. Author of The Joy of Minimalism and The Focus Reset."
+  },
+  {
+    "id": 9,
+    "name": "Emily Parker",
+    "bio": "Children's author and food writer."
+  },
+  {
+    "id": 4,
+    "name": "James Adams",
+    "bio": "Thriller novelist known for atmospheric mysteries."
+  },
+  {
+    "id": 3,
+    "name": "James Wright",
+    "bio": "Writer of practical guides to achieving goals with clarity and confidence."
+  },
+  {
+    "id": 5,
+    "name": "Jessica Martin",
+    "bio": "Romance and historical fiction author."
+  },
+  {
+    "id": 6,
+    "name": "Laura Mitchell",
+    "bio": "Science fiction author and former space-systems engineer."
+  },
+  {
+    "id": 2,
+    "name": "Raj Patel",
+    "bio": "Educator who writes about learning methods and curiosity."
+  }
+]
+
+
+GET, /api/authors/{id}
+Purpose: Get one author's details together with the books they wrote.
+
+{
+  "id": 2,
+  "name": "Raj Patel",
+  "bio": "Educator who writes about learning methods and curiosity.",
+  "books": [
+    {
+      "id": 7,
+      "title": "The Art of Learning",
+      "description": "Master the mindset and methods for effective lifelong learning.",
+      "isbn": "9780000000002",
+      "authorId": 2,
+      "author": "Raj Patel",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 259.00,
+      "stock": 40,
+      "rating": 4.20,
+      "ratingCount": 80,
+      "soldCount": 640,
+      "coverUrl": "/covers/the-art-of-learning.jpg",
+      "publishedOn": "2026-05-12",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 15,
+      "title": "Hindi Vyakaran Saral",
+      "description": "Simple, structured Hindi grammar for learners.",
+      "isbn": "9780000000013",
+      "authorId": 2,
+      "author": "Raj Patel",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 19,
+      "category": "Language Learning",
+      "format": "Paperback",
+      "language": "Hindi",
+      "price": 189.00,
+      "stock": 55,
+      "rating": 4.20,
+      "ratingCount": 30,
+      "soldCount": 210,
+      "coverUrl": "/covers/hindi-vyakaran.jpg",
+      "publishedOn": "2026-04-22",
+      "estimatedDelivery": "2026-11-11"
+    }
+  ]
+}
+
+GET, /api/books
+Purpose: Search, filter, sort and paginate books (by text, category, brand, author, language, format, price range).
+
+{
+  "items": [
+    {
+      "id": 2,
+      "title": "The Midnight Hour",
+      "description": "Haunting tale of a man's journey and the shadows of a forgotten past.",
+      "isbn": "9780000000004",
+      "authorId": 4,
+      "author": "James Adams",
+      "publisherId": 3,
+      "publisher": "Lakeview Books",
+      "categoryId": 2,
+      "category": "Mystery",
+      "format": "Paperback",
+      "language": "English",
+      "price": 299.00,
+      "stock": 60,
+      "rating": 4.60,
+      "ratingCount": 210,
+      "soldCount": 930,
+      "coverUrl": "/covers/the-midnight-hour.jpg",
+      "publishedOn": "2026-01-12",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 1,
+      "title": "Beneath the Stars",
+      "description": "A heartwarming tale where two souls discover who they need.",
+      "isbn": "9780000000005",
+      "authorId": 5,
+      "author": "Jessica Martin",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 1,
+      "category": "Romance",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 499.00,
+      "stock": 25,
+      "rating": 4.30,
+      "ratingCount": 150,
+      "soldCount": 880,
+      "coverUrl": "/covers/beneath-the-stars.jpg",
+      "publishedOn": "2026-03-03",
+      "estimatedDelivery": "2026-11-13"
+    },
+    {
+      "id": 8,
+      "title": "The Art of Focus",
+      "description": "Practical guide to mastering focus and boosting productivity every day.",
+      "isbn": "9780000000001",
+      "authorId": 1,
+      "author": "Arjun Patel",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 399.00,
+      "stock": 50,
+      "rating": 4.50,
+      "ratingCount": 120,
+      "soldCount": 820,
+      "coverUrl": "/covers/the-art-of-focus.jpg",
+      "publishedOn": "2026-04-22",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 4,
+      "title": "The Final Frontier",
+      "description": "A mission to space secrets to change humanity forever.",
+      "isbn": "9780000000006",
+      "authorId": 6,
+      "author": "Laura Mitchell",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 3,
+      "category": "Science Fiction",
+      "format": "Paperback",
+      "language": "English",
+      "price": 359.00,
+      "stock": 45,
+      "rating": 4.50,
+      "ratingCount": 130,
+      "soldCount": 760,
+      "coverUrl": "/covers/the-final-frontier.jpg",
+      "publishedOn": "2026-04-02",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 9,
+      "title": "The Path to Success",
+      "description": "A practical guide to achieving goals with clarity and confidence.",
+      "isbn": "9780000000003",
+      "authorId": 3,
+      "author": "James Wright",
+      "publisherId": 1,
+      "publisher": "ABC Publishers",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 359.00,
+      "stock": 35,
+      "rating": 4.40,
+      "ratingCount": 95,
+      "soldCount": 710,
+      "coverUrl": "/covers/the-path-to-success.jpg",
+      "publishedOn": "2026-06-01",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 7,
+      "title": "The Art of Learning",
+      "description": "Master the mindset and methods for effective lifelong learning.",
+      "isbn": "9780000000002",
+      "authorId": 2,
+      "author": "Raj Patel",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 7,
+      "category": "Self-help",
+      "format": "Paperback",
+      "language": "English",
+      "price": 259.00,
+      "stock": 40,
+      "rating": 4.20,
+      "ratingCount": 80,
+      "soldCount": 640,
+      "coverUrl": "/covers/the-art-of-learning.jpg",
+      "publishedOn": "2026-05-12",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 5,
+      "title": "Whispers of the Old Kingdom",
+      "description": "An epic quest across a realm where old magic is waking.",
+      "isbn": "9780000000010",
+      "authorId": 8,
+      "author": "Clara Nelson",
+      "publisherId": 3,
+      "publisher": "Lakeview Books",
+      "categoryId": 4,
+      "category": "Fantasy",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 449.00,
+      "stock": 20,
+      "rating": 4.40,
+      "ratingCount": 75,
+      "soldCount": 410,
+      "coverUrl": "/covers/whispers-old-kingdom.jpg",
+      "publishedOn": "2026-07-11",
+      "estimatedDelivery": "2026-11-13"
+    },
+    {
+      "id": 12,
+      "title": "Everyday Cooking Made Simple",
+      "description": "Fast, healthy home recipes with everyday ingredients.",
+      "isbn": "9780000000012",
+      "authorId": 9,
+      "author": "Emily Parker",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 10,
+      "category": "Cooking",
+      "format": "Paperback",
+      "language": "English",
+      "price": 279.00,
+      "stock": 33,
+      "rating": 4.30,
+      "ratingCount": 64,
+      "soldCount": 355,
+      "coverUrl": "/covers/everyday-cooking.jpg",
+      "publishedOn": "2026-08-10",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 6,
+      "title": "Letters from the Past",
+      "description": "A sweeping historical story told through letters across two wars.",
+      "isbn": "9780000000011",
+      "authorId": 5,
+      "author": "Jessica Martin",
+      "publisherId": 4,
+      "publisher": "Northstar Publishing",
+      "categoryId": 5,
+      "category": "Historical",
+      "format": "Paperback",
+      "language": "English",
+      "price": 329.00,
+      "stock": 28,
+      "rating": 4.10,
+      "ratingCount": 52,
+      "soldCount": 300,
+      "coverUrl": "/covers/letters-from-the-past.jpg",
+      "publishedOn": "2026-06-21",
+      "estimatedDelivery": "2026-11-12"
+    },
+    {
+      "id": 14,
+      "title": "Quantum Curiosity",
+      "description": "A friendly tour through the strangest ideas in modern physics.",
+      "isbn": "9780000000014",
+      "authorId": 6,
+      "author": "Laura Mitchell",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 16,
+      "category": "Science",
+      "format": "Hardcover",
+      "language": "English",
+      "price": 549.00,
+      "stock": 18,
+      "rating": 4.70,
+      "ratingCount": 88,
+      "soldCount": 270,
+      "coverUrl": "/covers/quantum-curiosity.jpg",
+      "publishedOn": "2026-09-09",
+      "estimatedDelivery": "2026-11-13"
+    },
+    {
+      "id": 15,
+      "title": "Hindi Vyakaran Saral",
+      "description": "Simple, structured Hindi grammar for learners.",
+      "isbn": "9780000000013",
+      "authorId": 2,
+      "author": "Raj Patel",
+      "publisherId": 2,
+      "publisher": "Horizon Press",
+      "categoryId": 19,
+      "category": "Language Learning",
+      "format": "Paperback",
+      "language": "Hindi",
+      "price": 189.00,
+      "stock": 55,
+      "rating": 4.20,
+      "ratingCount": 30,
+      "soldCount": 210,
+      "coverUrl": "/covers/hindi-vyakaran.jpg",
+      "publishedOn": "2026-04-22",
+      "estimatedDelivery": "2026-11-11"
+    },
+    {
+      "id": 11,
+      "title": "Wanderlust Diaries",
+      "description": "Travel stories and practical tips from 30 countries.",
+      "isbn": "9780000000015",
+      "authorId": 1,
+      "author": "Arjun Patel",
+      "publisherId": 5,
+      "publisher": "Little Owl Books",
+      "categoryId": 9,
+      "category": "Travel",
+      "format": "Paperback",
+      "language": "English",
+      "price": 379.00,
+      "stock": 22,
+      "rating": 4.00,
+      "ratingCount": 41,
+      "soldCount": 190,
+      "coverUrl": "/covers/wanderlust-diaries.jpg",
+      "publishedOn": "2026-07-21",
+      "estimatedDelivery": "2026-11-12"
+    }
+  ],
+  "page": 0,
+  "size": 12,
+  "totalItems": 15,
+  "totalPages": 2
+}
+
+
+GET, /api/books/{id}
+Purpose: Get full details of one book: book info, author, reviews and related books.
+
+{
+  "book": {
+    "id": 2,
+    "title": "The Midnight Hour",
+    "description": "Haunting tale of a man's journey and the shadows of a forgotten past.",
+    "isbn": "9780000000004",
+    "authorId": 4,
+    "author": "James Adams",
+    "publisherId": 3,
+    "publisher": "Lakeview Books",
+    "categoryId": 2,
+    "category": "Mystery",
+    "format": "Paperback",
+    "language": "English",
+    "price": 299.00,
+    "stock": 60,
+    "rating": 4.60,
+    "ratingCount": 210,
+    "soldCount": 930,
+    "coverUrl": "/covers/the-midnight-hour.jpg",
+    "publishedOn": "2026-01-12",
+    "estimatedDelivery": "2026-11-11"
+  },
+  "author": {
+    "id": 4,
+    "name": "James Adams",
+    "bio": "Thriller novelist known for atmospheric mysteries."
+  },
+  "reviews": [],
+  "relatedBooks": [
+    {
+      "id": 3,
+      "title": "The Vanishing House",
+      "description": "A chilling mystery unfolds within a house that disappears.",
+      "isbn": "9780000000008",
+      "authorId": 8,
+      "author": "Clara Nelson",
+      "publisherId": 3,
+      "publisher": "Lakeview Books",
+      "categoryId": 2,
+      "category": "Mystery",
+      "format": "eBook",
+      "language": "English",
+      "price": 99.00,
+      "stock": 999,
+      "rating": 4.00,
+      "ratingCount": 22,
+      "soldCount": 60,
+      "coverUrl": "/covers/the-vanishing-house.jpg",
+      "publishedOn": "2026-10-31",
+      "estimatedDelivery": "2026-11-09"
+    }
+  ]
+}
+
+
+GET, /api/books/{id}/related
+Purpose: Get up to 5 books related to the given book.
+
+[
+  {
+    "id": 3,
+    "title": "The Vanishing House",
+    "description": "A chilling mystery unfolds within a house that disappears.",
+    "isbn": "9780000000008",
+    "authorId": 8,
+    "author": "Clara Nelson",
+    "publisherId": 3,
+    "publisher": "Lakeview Books",
+    "categoryId": 2,
+    "category": "Mystery",
+    "format": "eBook",
+    "language": "English",
+    "price": 99.00,
+    "stock": 999,
+    "rating": 4.00,
+    "ratingCount": 22,
+    "soldCount": 60,
+    "coverUrl": "/covers/the-vanishing-house.jpg",
+    "publishedOn": "2026-10-31",
+    "estimatedDelivery": "2026-11-09"
+  }
+]
+
+
+GET, /api/books/{id}/reviews
+Purpose: List all reviews and ratings of a book.
+
+Response:
+[
+  {
+    "id": 2,
+    "bookId": 6,
+    "userName": "Laxman Honawad",
+    "rating": 4,
+    "comment": "Good read",
+    "createdAt": "2026-11-09T02:40:58.783763Z"
+  }
+]
+
+POST, /api/books/{id}/reviews
+Purpose: Add a rating (1-5) and short comment to a book as the logged-in user.
+
+Request
+{ "rating": 5, "comment": "Great read" }
+
+Response
+{
+  "id": 2,
+  "bookId": 6,
+  "userName": "Laxman Honawad",
+  "rating": 5,
+  "comment": "Great read",
+  "createdAt": "2026-11-09T02:40:58.783762900Z"
+}
+
+Request
+{ "rating": 4, "comment": "Good read" }
+
+Response
+{
+  "id": 2,
+  "bookId": 6,
+  "userName": "Laxman Honawad",
+  "rating": 4,
+  "comment": "Good read",
+  "createdAt": "2026-11-09T02:40:58.783763Z"
+}
+
+
+GET, /api/recommendations
+Purpose: Get up to 6 personalised book recommendations for the logged-in user.
+
+[
+  {
+    "id": 2,
+    "title": "The Midnight Hour",
+    "description": "Haunting tale of a man's journey and the shadows of a forgotten past.",
+    "isbn": "9780000000004",
+    "authorId": 4,
+    "author": "James Adams",
+    "publisherId": 3,
+    "publisher": "Lakeview Books",
+    "categoryId": 2,
+    "category": "Mystery",
+    "format": "Paperback",
+    "language": "English",
+    "price": 299.00,
+    "stock": 60,
+    "rating": 4.60,
+    "ratingCount": 210,
+    "soldCount": 930,
+    "coverUrl": "/covers/the-midnight-hour.jpg",
+    "publishedOn": "2026-01-12",
+    "estimatedDelivery": "2026-11-11"
+  },
+  {
+    "id": 1,
+    "title": "Beneath the Stars",
+    "description": "A heartwarming tale where two souls discover who they need.",
+    "isbn": "9780000000005",
+    "authorId": 5,
+    "author": "Jessica Martin",
+    "publisherId": 4,
+    "publisher": "Northstar Publishing",
+    "categoryId": 1,
+    "category": "Romance",
+    "format": "Hardcover",
+    "language": "English",
+    "price": 499.00,
+    "stock": 25,
+    "rating": 4.30,
+    "ratingCount": 150,
+    "soldCount": 880,
+    "coverUrl": "/covers/beneath-the-stars.jpg",
+    "publishedOn": "2026-03-03",
+    "estimatedDelivery": "2026-11-13"
+  },
+  {
+    "id": 8,
+    "title": "The Art of Focus",
+    "description": "Practical guide to mastering focus and boosting productivity every day.",
+    "isbn": "9780000000001",
+    "authorId": 1,
+    "author": "Arjun Patel",
+    "publisherId": 1,
+    "publisher": "ABC Publishers",
+    "categoryId": 7,
+    "category": "Self-help",
+    "format": "Paperback",
+    "language": "English",
+    "price": 399.00,
+    "stock": 50,
+    "rating": 4.50,
+    "ratingCount": 120,
+    "soldCount": 820,
+    "coverUrl": "/covers/the-art-of-focus.jpg",
+    "publishedOn": "2026-04-22",
+    "estimatedDelivery": "2026-11-11"
+  },
+  {
+    "id": 4,
+    "title": "The Final Frontier",
+    "description": "A mission to space secrets to change humanity forever.",
+    "isbn": "9780000000006",
+    "authorId": 6,
+    "author": "Laura Mitchell",
+    "publisherId": 4,
+    "publisher": "Northstar Publishing",
+    "categoryId": 3,
+    "category": "Science Fiction",
+    "format": "Paperback",
+    "language": "English",
+    "price": 359.00,
+    "stock": 45,
+    "rating": 4.50,
+    "ratingCount": 130,
+    "soldCount": 760,
+    "coverUrl": "/covers/the-final-frontier.jpg",
+    "publishedOn": "2026-04-02",
+    "estimatedDelivery": "2026-11-12"
+  },
+  {
+    "id": 9,
+    "title": "The Path to Success",
+    "description": "A practical guide to achieving goals with clarity and confidence.",
+    "isbn": "9780000000003",
+    "authorId": 3,
+    "author": "James Wright",
+    "publisherId": 1,
+    "publisher": "ABC Publishers",
+    "categoryId": 7,
+    "category": "Self-help",
+    "format": "Paperback",
+    "language": "English",
+    "price": 359.00,
+    "stock": 35,
+    "rating": 4.40,
+    "ratingCount": 95,
+    "soldCount": 710,
+    "coverUrl": "/covers/the-path-to-success.jpg",
+    "publishedOn": "2026-06-01",
+    "estimatedDelivery": "2026-11-12"
+  },
+  {
+    "id": 7,
+    "title": "The Art of Learning",
+    "description": "Master the mindset and methods for effective lifelong learning.",
+    "isbn": "9780000000002",
+    "authorId": 2,
+    "author": "Raj Patel",
+    "publisherId": 2,
+    "publisher": "Horizon Press",
+    "categoryId": 7,
+    "category": "Self-help",
+    "format": "Paperback",
+    "language": "English",
+    "price": 259.00,
+    "stock": 40,
+    "rating": 4.20,
+    "ratingCount": 80,
+    "soldCount": 640,
+    "coverUrl": "/covers/the-art-of-learning.jpg",
+    "publishedOn": "2026-05-12",
+    "estimatedDelivery": "2026-11-11"
+  }
+]
+
+GET, /api/wishlist
+Purpose: List the books in the logged-in user's wishlist.
+
+Response
+[
+  {
+    "id": 6,
+    "title": "Letters from the Past",
+    "description": "A sweeping historical story told through letters across two wars.",
+    "isbn": "9780000000011",
+    "authorId": 5,
+    "author": "Jessica Martin",
+    "publisherId": 4,
+    "publisher": "Northstar Publishing",
+    "categoryId": 5,
+    "category": "Historical",
+    "format": "Paperback",
+    "language": "English",
+    "price": 329.00,
+    "stock": 28,
+    "rating": 4.10,
+    "ratingCount": 53,
+    "soldCount": 300,
+    "coverUrl": "/covers/letters-from-the-past.jpg",
+    "publishedOn": "2026-06-21",
+    "estimatedDelivery": "2026-11-12"
+  }
+]
+
+POST, /api/wishlist/{bookId}
+Purpose: Add a book to the wishlist and return the updated wishlist.
+
+Request
+{
+  "id": 1,
+  "title": "Clean Code",
+  "description": "...",
+  "isbn": "9780132350884",
+  "authorId": 1,
+  "author": "Robert C. Martin",
+  "publisherId": 1,
+  "publisher": "Prentice Hall",
+  "categoryId": 1,
+  "category": "Programming",
+  "format": "Paperback",
+  "language": "English",
+  "price": 450.00,
+  "stock": 25,
+  "rating": 4.5,
+  "ratingCount": 10,
+  "soldCount": 120,
+  "coverUrl": "https://...",
+  "publishedOn": "2008-08-01",
+  "estimatedDelivery": "2026-11-12"
+}
+
+Response
+[
+  {
+    "id": 6,
+    "title": "Letters from the Past",
+    "description": "A sweeping historical story told through letters across two wars.",
+    "isbn": "9780000000011",
+    "authorId": 5,
+    "author": "Jessica Martin",
+    "publisherId": 4,
+    "publisher": "Northstar Publishing",
+    "categoryId": 5,
+    "category": "Historical",
+    "format": "Paperback",
+    "language": "English",
+    "price": 329.00,
+    "stock": 28,
+    "rating": 4.10,
+    "ratingCount": 53,
+    "soldCount": 300,
+    "coverUrl": "/covers/letters-from-the-past.jpg",
+    "publishedOn": "2026-06-21",
+    "estimatedDelivery": "2026-11-12"
+  }
+]
+
+
+DELETE, /api/wishlist/{bookId}
+Purpose: Remove a book from the wishlist and return the updated wishlist.
+
+GET /api/books?q=java&categoryId=2&minPrice=100&maxPrice=900&sort=relevance&page=0&size=12
+PageView
+{ "items": [ /* BookView */ ], "page": 0, "size": 12, "totalItems": 40, "totalPages": 4 }
+
+BookView
+{
+  "id": 1, "title": "Clean Code", "description": "...", "isbn": "9780132350884",
+  "authorId": 1, "author": "Robert C. Martin", "publisherId": 1, "publisher": "Prentice Hall",
+  "categoryId": 1, "category": "Programming", "format": "Paperback", "language": "English",
+  "price": 450.00, "stock": 25, "rating": 4.5, "ratingCount": 10, "soldCount": 120,
+  "coverUrl": "https://...", "publishedOn": "2008-08-01", "estimatedDelivery": "2026-11-12"
+}
+
+BookDetail
+{ "book": BookView, "author": AuthorView, "reviews": [ReviewView], "relatedBooks": [BookView] }
+
+Review request (POST /api/books/{id}/reviews)
+{ "rating": 5, "comment": "Great read" }
+
+ReviewView
+{ "id": 1, "bookId": 1, "userName": "John Doe", "rating": 5, "comment": "Great read", "createdAt": "2026-11-08T09:00:00Z" }
+
+
+=====================================================================================================
+3. Cart, coupons and shipping (/api)
+
+GET, /api/cart
+Purpose: View the logged-in user's cart with price breakup; optional couponCode / giftPoints query params preview the checkout totals.
+
+POST, /api/cart/items
+Purpose: Add a book (bookId + quantity) to the cart and return the updated cart.
+/api/shipping/rates
+
+
+PUT, /api/cart/items/{bookId}
+Purpose: Change the quantity of a book already in the cart.
+{ "quantity": 3 }
+
+
+DELETE, /api/cart/items/{bookId}
+Purpose: Remove one book from the cart.
+
+DELETE, /api/cart
+Purpose: Empty the whole cart.
+
+POST, /api/coupons/validate
+Purpose: Check whether a coupon code is valid for a given order amount and get the discount (no login needed).
+{ "code": "SAVE10", "orderAmount": 1000 }
+
+GET, /api/shipping/rates
+Purpose: Get the delivery charge and estimated delivery date for a PIN code (query params: pin, orderAmount).
+
+
+CartView
+{
+  "items": [ { "book": BookView, "quantity": 2, "lineTotal": 900.00 } ],
+  "pricing": {
+    "itemCount": 2, "subtotal": 900.00, "tax": 45.00, "deliveryCharge": 40.00,
+    "couponCode": "SAVE10", "couponDiscount": 90.00, "giftPointsApplied": 0,
+    "totalAmount": 895.00, "giftPointsEarned": 9, "giftPointsAvailable": 50
+  }
+}
+
+CouponValidation
+{ "code": "SAVE10", "valid": true, "discount": 100.00, "message": "Coupon applied" }
+
+ShippingRate
+{ "pin": "560001", "charge": 40.00, "estimatedDays": 3, "estimatedDelivery": "2026-11-11" }
+
+=======================================================================================================================
+4. Orders and payment (/api, all 🔒)
+
+POST, /api/orders/checkout
+Purpose: Place an order from the cart for a chosen delivery address, optionally applying a coupon and gift points.
+{ "addressId": 1, "couponCode": "SAVE10", "giftPoints": 0 }
+
+
+GET, /api/orders
+Purpose: Get the logged-in user's order history.
+
+GET, /api/orders/buy-again
+Purpose: Get books from the user's previous orders so they can be bought again.
+
+GET, /api/orders/{id}
+Purpose: Get the details of one of the user's orders.
+
+POST, /api/orders/{id}/payment
+Purpose: Pay for an order using credit card, debit card, UPI or wallet.
+{
+  "method": "CREDIT_CARD",
+  "cardNumber": "4111111111111111", "nameOnCard": "John Doe", "cvv": "123", "expiry": "12/28",
+  "upiId": null, "walletId": null
+}
+
+
+GET, /api/orders/{id}/payments
+Purpose: List the payment attempts/transactions made for an order.
+
+POST, /api/orders/{id}/cancel
+Purpose: Cancel an order (allowed only within 48 hours of placing it).
+
+POST, /api/orders/{id}/return
+Purpose: Request a return for an order.
+
+GET, /api/orders/{id}/shipment
+Purpose: Track an order's shipment (status, tracking number, estimated delivery).
+
+
+OrderView
+{
+  "id": 1, "status": "PENDING",
+  "items": [ { "bookId": 1, "title": "Clean Code", "unitPrice": 450.00, "quantity": 2, "lineTotal": 900.00 } ],
+  "subtotal": 900.00, "tax": 45.00, "deliveryCharge": 40.00,
+  "couponCode": "SAVE10", "couponDiscount": 90.00,
+  "giftPointsUsed": 0, "giftPointsEarned": 9, "totalAmount": 895.00,
+  "shippingAddress": "John Doe, 12 MG Road, ...", "estimatedDelivery": "2026-11-12",
+  "createdAt": "2026-11-08T09:00:00Z", "confirmedAt": null, "cancellable": true
+}
+
+PaymentResult
+{
+  "payment": { "id": 1, "orderId": 1, "method": "CREDIT_CARD", "amount": 895.00, "status": "SUCCESS", "transactionRef": "TXN123", "createdAt": "..." },
+  "order": OrderView
+}
+
+ShipmentView
+{ "orderId": 1, "status": "SHIPPED", "trackingNumber": "TRK123", "estimatedDelivery": "2026-11-12", "updatedAt": "..." }
+
+==================================================================================================================================================================
+5. Admin (/api/admin, all 🛡️)
+
+POST, /api/admin/books
+Purpose: Add a new book to the catalog.
+{
+  "title": "Clean Code", "description": "...", "isbn": "9780132350884",
+  "authorId": 1, "publisherId": 1, "categoryId": 1,
+  "format": "Paperback", "language": "English",
+  "price": 450.00, "stock": 25, "coverUrl": "https://...", "deliveryDays": 3
+}
+
+PUT, /api/admin/books/{id}
+Purpose: Update an existing book's details, price or stock.
+{
+  "title": "Clean Code", "description": "...", "isbn": "9780132350884",
+  "authorId": 1, "publisherId": 1, "categoryId": 1,
+  "format": "Paperback", "language": "English",
+  "price": 450.00, "stock": 25, "coverUrl": "https://...", "deliveryDays": 3
+}
+
+DELETE, /api/admin/books/{id}
+Purpose: Remove a book from the catalog.
+
+POST, /api/admin/categories
+Purpose: Create a new book category.
+{ "name": "Fiction" }
+
+POST /api/admin/brands
+Purpose: Create a new brand/publisher.
+{ "name": "Penguin" }
+
+POST, /api/admin/authors
+Purpose: Create a new author (name and optional bio).
+{ "name": "...", "bio": "..." }
+
+PUT, /api/admin/orders/{id}/shipment
+Purpose: Update an order's shipment status to SHIPPED or DELIVERED.
+{ "status": "SHIPPED" }
+
+
